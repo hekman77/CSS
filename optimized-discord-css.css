@@ -7,12 +7,9 @@
     --blob-scale: 48;
     --guildbar-folder-size: var(--guildbar-avatar-size);
     --folder-blob-scale: var(--blob-scale);
-    
-    /* Animation variables for better performance */
-    --panel-transition: 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-/* Visual refresh panels positioning */
+/* Visual refresh panels positioning - simplified */
 .visual-refresh div[class^="sidebar_"] section[class^="panels_"] {
     width: calc(var(--custom-guild-sidebar-width) - var(--custom-guild-list-width) + 1px);
     left: var(--custom-guild-list-width);
@@ -22,10 +19,10 @@
 }
 
 .visual-refresh nav[class*=guilds_] {
-    margin-bottom: unset;
+    margin-bottom: 0;
 }
 
-/* Panels styling with performance optimizations */
+/* Optimized panels with reduced animations */
 .panels_c48ade {
     left: var(--space-sm) !important;
     height: 57px !important;
@@ -34,11 +31,14 @@
     display: flex !important;
     flex-direction: column;
     overflow: hidden;
-    transition: height var(--panel-transition), width var(--panel-transition), border-radius var(--panel-transition);
+    transition: width 0.2s ease-out, height 0.2s ease-out;
     z-index: 50000;
     pointer-events: all;
     border: 1px solid var(--border-subtle) !important;
-    will-change: width, height;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
 }
 
 .panels_c48ade:has(.container_e131a9) {
@@ -50,19 +50,18 @@
     overflow: hidden;
 }
 
-/* Use hardware acceleration for hover effects */
+/* Simplified hover effects */
 .panels_c48ade:hover {
     width: 300px !important;
     height: auto !important;
     border-radius: 15px !important;
-    transform: translateZ(0);
 }
 
 .panels_c48ade:hover .wrapper_e131a9 {
     height: auto !important;
 }
 
-/* Sidebar improvements */
+/* Basic sidebar adjustments */
 .sidebar_c48ade {
     overflow: visible !important;
 }
@@ -73,19 +72,19 @@
 
 .scroller__99e7c {
     margin-bottom: 0 !important;
+    contain: paint; /* Improve scroll performance */
 }
 
 .bottom__7aaec {
     bottom: 0 !important;
 }
 
-/* Optimize button animations */
+/* Simplified button animations */
 .visual-refresh [class^="panels_"] [class^="container__"] [class^="buttons__"] {
     opacity: 0;
     transform: scale(0);
     transform-origin: left;
     transition: opacity 0.15s ease-out, transform 0.15s ease-out;
-    will-change: opacity, transform;
 }
 
 .visual-refresh [class^="panels_"]:hover [class^="container__"] [class^="buttons__"] {
@@ -93,7 +92,7 @@
     opacity: 1;
 }
 
-/* Panel visibility */
+/* Simple panel visibility */
 .visual-refresh .panel__5dec7 {
     display: none;
 }
@@ -102,7 +101,7 @@
     display: block;
 }
 
-/* Timestamp optimization */
+/* Simplified timestamp style */
 span[class*="timestampInline_"] time::before {
     content: attr(aria-label);
     font-size: 12px;
@@ -112,12 +111,12 @@ span[class*="timestampInline_"] {
     font-size: 0 !important;
 }
 
-/* Hide nameplates more efficiently */
+/* Improved nameplate hiding */
 [style^="background: linear-gradient(90deg"]:has([src*="/nameplates/"]) {
     display: none;
 }
 
-/* Optimize DM link plates */
+/* Simplified DM link styles */
 [class*="dm_"]:has([class*="linkPlated_"]) [class*="linkPlated_"] {
     padding-right: var(--space-16);
 }
@@ -130,29 +129,36 @@ span[class*="timestampInline_"] {
     opacity: 1;
 }
 
-[class*="dm_"]:has([class*="linkPlated_"]) [class*="closeButtonPlated_"] [class^="innerCloseButtonPlated"] {
-    opacity: unset;
-    background: none;
-}
-
-[class*="dm_"]:has([class*="linkPlated_"]) [class*="closeButtonPlated_"] [class^="innerCloseButtonPlated"] svg {
-    color: inherit;
-}
-
-[class*="dm_"]:has([class*="linkPlated_"]) [class*="closeButtonPlated_"] [class^="innerCloseButtonPlated"] svg:is(:hover, :focus-within) {
-    color: var(--interactive-hover);
-}
-
-/* Hide member elements */
+/* Hide member elements - combined selectors */
 [class*='membersGroup']:has([role=button]),
 [class*='member'] [class*='container']:has([class*='badges']) {
     display: none;
 }
 
-/* Remove quick react bar */
-.button_f7ecac.hoverBarButton_f84418:nth-of-type(1),
-.button_f7ecac.hoverBarButton_f84418:nth-of-type(2),
-.button_f7ecac.hoverBarButton_f84418:nth-of-type(3),
+/* Remove quick react bar - combined selector */
+.button_f7ecac.hoverBarButton_f84418:nth-of-type(-n+3),
 .separator_f84418 {
     display: none;
+}
+
+/* Optimize message rendering */
+[class*="message_"] {
+    contain: layout style;
+}
+
+/* Add scroll optimization to all scrollable areas */
+[class*="scroller"] {
+    contain: content;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Reduce animation complexity in chat */
+[class*="chat_"] * {
+    animation-duration: 0.15s !important;
+}
+
+/* Reduce the impact of hover effects while scrolling */
+html:has([class*="scroller"]:active) [class*="messageContainer_"]:hover {
+    background-color: transparent !important;
 }
